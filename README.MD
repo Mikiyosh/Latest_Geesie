@@ -1,4 +1,4 @@
-# Geesie_how is your dating going?
+# Geesie_how is your dating going?（デートプランニング）
 
 ## 紹介と使い方
 
