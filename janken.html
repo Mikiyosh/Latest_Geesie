@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+  <link rel="stylesheet" href="css/sample.css">
+  <title>how is youe date going</title>
+
+
+
+</head>
+
+<body>
+  <!--title-->
+  <header>
+    <div class="weawrapper">
+      <div class="wheabox">
+        <h1 class="wheatitle">wheather</h1>
+        <p class="pic">pic</p>
+      </div>
+      <div class="maintitle">
+        <h1 class="title">How is your dating going?</h1>
+      </div>
+    </div>
+  </header>
+
+  <!--Fire-Works-->
+  <div id="container"></div>
+
+  <!--popup-->
+  <div class="popupwrapper">
+    <button class="openning">START GAME</button>
+  </div>
+
+  <div class="popup-overlay">
+    <div class="popup-content">
+      <h2 class="warning">Warning</h2>
+      <p class="ww"> Please note that this content is designated R25 and is intended for viewers who are 18 years of age
+        or older.
+        Thank you for your understanding and cooperation.</p>
+      <button class="close">Yes, I am over 18 years old</button>
+    </div>
+  </div>
+
+
+  <!--button-->
+  <main>
+    <div class="wrapper">
+      <div class="btnwrapper">
+        <h1 id="musicbtn" class="btn_pin btn_shadow">Music</h1>
+        <h1 id="wheabtn" class="btn_pin btn_shadow">Weather</h1>
+        <h1 id="stylebtn" class="btn_pin btn_shadow">Style</h1>
+        <h1 id="placebtn" class="btn_pin btn_shadow">Place</h1>
+        <h1 id="tipsbtn" class="btn_pin btn_shadow">Tips</h1>
+      </div>
+
+      <div class="geobtn">
+        <h1 id="whobtn" class="btn_pin btn_shadow">Danger</h1>
+      </div>
+    </div>
+
+
+    <ul class="box_wrapper">
+      <li class="style_box">
+        <div class="stylediv">
+          <h2 id="style">your Style?</h2>
+          <p id="style_de">
+        </div>
+        </p>
+
+
+        </div>
+      </li>
+
+      <li class="place_box">
+        <h2 id="place"> to where?</h2>
+
+        <div><img id="pic" src="park.png" width="260"></div>
+      </li>
+
+      <li class="tips_box">
+        <div class="mess">
+          <h2 id="tips">tips?</h2>
+          <p id="tips_de" class="tips_de2">Today's message</p>
+
+        </div>
+      </li>
+
+      <li class="who_box">
+        <h2 id="who">with Who?</h2>
+        <p id="who_de"></p>
+      </li>
+    </ul>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bubbly-bg@1.0.0/dist/bubbly-bg.js"></script>
+
+
+    <div class="btnwrapper">
+      <h1 id="retrybtn" class="btn1 btn btn_pin btn_shadow retrybtn">RETRY</h1>
+      <div> <a class="twitter-share-button" href="#">ツイートする</a></div>
+    </div>
+
+  </main>
+
+  <footer class="ft">Geesie🄬</footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+
+  <!--JS-------------------------------------------->
+
+  <script>
+
+    let audio1 = new Audio("./music/barbie.mp4")
+    let mclickCount = 0
+
+    $("#musicbtn").on("click", function () {
+      mclickCount += 1;
+      if (mclickCount === 1) {
+        audio1.play();
+      } else if (mclickCount === 2) {
+        audio1.pause();
+      } else if (mclickCount === 3) {
+        audio1.play();
+      } else if (mclickCount === 4) {
+        audio1.pause();
+      } else if (mclickCount === 5) {
+        audio1.play();
+      } else if (mclickCount === 6) {
+        audio1.pause();
+
+      }
+
+    });
+
+    //Wheathe//
+    $("#wheabtn").on("click", function () {
+
+      let xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=Fukuoka&appid=a9a2e1c3b724303134de4cf3659d7cd1&units=metric", true);
+      xhr.onload = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            let response = JSON.parse(xhr.responseText);
+            let weatherDescription = response.weather[0].description;
+            let temperature = response.main.temp;
+            let cityName = response.name;
+            let iconCode = response.weather[0].icon;
+            let iconUrl = "https://openweathermap.org/img/w/" + iconCode + ".png";
+            let weatherInfo = cityName + "の天気は、" + weatherDescription + "で、気温は" + temperature + "℃です。";
+            let weatherIcon = "<img src='" + iconUrl + "' alt='weather icon'>";
+            $(".pic").html(weatherIcon + weatherInfo);
+            $(".wheabox").css("display", "block");
+          } else {
+            console.error(xhr.statusText);
+          }
+        }
+      };
+      xhr.onerror = function () {
+        console.error(xhr.statusText);
+      };
+      xhr.send();
+    });
+
+
+
+
+
+    //STYLE//
+
+    let clickCount = 0;
+
+    $("#stylebtn").on("click", function () {
+      clickCount++;
+
+      if (clickCount === 1) {
+
+        $("#style").text("セクシースタイルで！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/sexy.jpg" alt="セクシー画像" width="260">').css('margin-top', '-20px');
+
+
+
+      } else if (clickCount === 2) {
+        $("#style").text("ファッショニスタで個性的！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/fashionista.jpg" alt="ファッショニスタ画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount === 3) {
+        $("#style").text("ロックにきめちゃう！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/rock.jpg" alt="インテリ画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 4) {
+        $("#style").text("キュートで元気いっぱいに！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/cute.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 5) {
+        $("#style").text("もえ系！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/glasses.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+      } else if (clickCount == 6) {
+        $("#style").text("ゴージャス！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/geo.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+      } else if (clickCount == 7) {
+        $("#style").text("BE CREATIVE!").css("font-size", "18px");
+        $("#style_de").html('<img src="img/beyou.jpg" alt="画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 8) {
+        $("#style").text("G'sで修行！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/gs.png" alt="画像" width=260>').css('margin-top', '-20px');
+
+      } else if (clickCount == 9) {
+        $("#style").text("今日はセクシースタイルで！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/sexy.jpg" alt="セクシー画像" width=260>').css('margin-top', '-20px');
+
+      } else if (clickCount === 10) {
+        $("#style").text("ファッショニスタで個性的！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/fashionista.jpg" alt="ファッショニスタ画像" width=260>').css('margin-top', '-20px');
+
+      } else if (clickCount === 11) {
+        $("#style").text("ロックにきめちゃう！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/rock.jpg" alt="インテリ画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 12) {
+        $("#style").text("キュートで元気いっぱいに！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/cute.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 13) {
+        $("#style").text("もえ系！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/glasses.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 14) {
+        $("#style").text("ゴージャス！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/geo.jpg" alt="キュート画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 15) {
+        $("#style").text("BE CREATIVE!").css("font-size", "18px");
+        $("#style_de").html('<img src="img/beyou.jpg" alt="画像" width=260>').css('margin-top', '-20px');
+
+
+      } else if (clickCount == 16) {
+        $("#style").text("G'sで修行！").css("font-size", "18px");
+        $("#style_de").html('<img src="img/gs.png" alt="画像" width=260>').css('margin-top', '-20px');
+      }
+
+    });
+
+
+
+
+
+    $("#placebtn").on("click", function () {
+      'use strict';
+      let intervalId;
+      const img = ["img/park.png", "img/scotch.png", "img/driving.png", "img/cooking.png", "img/bearch.jpg"];
+      const imgCaptions = ["遊園地デート！", "あの方とスコッチ！", "ドライブデート！", "手料理ふるまっちゃおう！", "ビーチデート！"];
+      let count = -1;
+
+      function picChange() {
+        count++;
+
+        if (count == img.length) count = 0;
+        document.getElementById("pic").src = img[count];
+        $("#place").text(imgCaptions[count]).css("font-size", "18px");
+      }
+
+
+      function toggleChanging() {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = undefined;
+          $("#placebtn").text("Start");
+        } else {
+          $("#pic").parent().css("margin-top", "-20px");
+          $("#place").parent().css("margin-top", "0");
+          intervalId = setInterval(picChange, 100);
+          $("#placebtn").text("Stop");
+        }
+      }
+
+      $("#placebtn").off("click");
+
+      $("#placebtn").on("click", toggleChanging);
+
+    });
+
+
+
+
+
+
+
+    $("#retrybtn").on("click", function () {
+      location.reload();
+    });
+
+
+
+
+
+    //TIPS/
+
+    let aCount = 0;
+    let bCount = 0;
+
+    const aButton = document.querySelector('#stylebtn');
+    aButton.addEventListener('click', () => {
+      aCount++; // Aボタンをクリックした回数をカウントアップ
+      checkCounts(); // 押した回数をチェックする関数を呼び出す
+    });
+
+    const bButton = document.querySelector('#tipsbtn');
+    bButton.addEventListener('click', () => {
+      bCount++; // Bボタンをクリックした回数をカウントアップ
+      checkCounts(); // 押した回数をチェックする関数を呼び出す
+    });
+
+
+
+    // AボタンとBボタンの押した回数をチェックして、条件を満たしていればアラートを表示する関数
+    function checkCounts() {
+      if (aCount <= 2 && bCount >= 1) {
+        $("#tips").text("デートの勝算　９０％").css("font-size", "20px")
+        $('#tips_de').css({
+          'background-color': '#FFDDFF',
+          'font-size': '18px',
+          'display': 'none',
+          'padding': '20px'
+        }).html('そのデートって行く意味ある？同期ともくもくした方がいいんじゃない？').css("font-size", "20px")
+        $('#tips_de').css('box-shadow', '4px 4px 4px #888');
+        setTimeout(function () {
+          $('#tips_de').fadeIn();
+        }, 1000);
+
+      } else if (aCount >= 3 && aCount <= 5 && bCount >= 1) {
+        $("#tips").text("デートの勝算　６０％").css("font-size", "20px")
+        $('#tips_de').css({
+          'background-color': '#FFDDFF',
+          'font-size': '18px',
+          'display': 'none',
+          'padding': '20px'
+        }).html('ちょっと頑張りすぎてない？！地球上に男は何人いると思ってるの？・・・<br>35億。')
+        $('#tips_de').css('box-shadow', '4px 4px 4px #888');
+        setTimeout(function () {
+          $('#tips_de').fadeIn();
+        }, 1000);
+
+      } else if (aCount >= 6 && bCount >= 1) {
+        $("#tips").text("デートの勝算　６０％").css("font-size", "20px")
+        $('#tips_de').css({
+          'background-color': '#FFDDFF',
+          'font-size': '18px',
+          'display': 'none',
+          'padding': '20px'
+        }).html('ちょっと頑張りすぎてない？！地球上に男は何人いると思ってるの？・・・<br>35億。').css("font-size", "20px")
+        $('#tips_de').css('box-shadow', '4px 4px 4px #888');
+        setTimeout(function () {
+          $('#tips_de').fadeIn();
+        }, 1000);
+
+      }
+
+    }
+
+    //WHO//  
+    let audio2 = new Audio("./music/Katy.mp4")
+    let cCount = 0
+    $("#whobtn").on("click", function () {
+      cCount++;
+      console.log(cCount);
+
+
+
+      if (cCount === 1) {
+
+        $("#who").text("Baby, wanna hang out?").css("font-size", "18px")
+        $('#who_de').html('<img src="img/george.png" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+      } else if (cCount === 2) {
+        $("#who").text("just a way you are.").css("font-size", "18px")
+        $('#who_de').html('<img src="img/colin.png" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+      } else if (cCount === 3) {
+        $("#who").text("Wanna go for a ride?").css("font-size", "18px")
+        $('#who_de').html('<img src="img/jon.png" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+      } else if (cCount === 4) {
+        $("#who").text("Be my Bond Lady..").css("font-size", "18px")
+        $('#who_de').html('<img src="img/dan.jpg" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+      } else if (cCount === 5) {
+        $("#who").text("Hey sweetie..").css("font-size", "18px")
+        $('#who_de').html('<img src="img/brad.jpg" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+      } else if (cCount === 6) {
+        $("#who").text("Hey sweetie..").css("font-size", "18px")
+        $('#who_de').html('<img src="img/bob.jpg" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+
+
+      } else if (cCount === 7) {
+        $("#style").attr("src", "default_image.jpg");
+        $("#style").text("G'sの講義に集中！").css("font-size", "18px");
+
+        $("#style_de").attr("src", "default_image.jpg");
+        $("#style_de").html('<img src="img/taro.png" alt="画像" width=257>').css('margin-top', '-15px');
+
+        $("#place").attr("src", "default_image.jpg");
+        $("#place").text("イザカヤエースで反省会！").css("font-size", "18px");
+
+        $("#pic").attr("src", "default_image.jpg");
+        $("#pic").css({
+
+          "background-image": 'url("img/ace.jpg")',
+          "background-size": "cover",
+          "background-position": "center",
+          "height": "257px",
+          "width": "257px",
+          "margin-top": "0"
+        })
+        $("#tips").text("デートばっかりしないで！").css("font-size", "18px")
+        $("#tips_de").text('半年はプログラミングに集中しなさい！')
+
+        $("#who").text("Let's もくもく！").css("font-size", "18px")
+        $('#who_de').html('<img src="img/kodama.png" alt="サンプル画像" width=257>').css('margin-top', '-15px')
+        audio2.play();
+        audio1.pause();
+
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      } else if (cCount === 8) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      }
+
+      else if (cCount === 9) {
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      }
+    });
+
+
+
+    bubbly({
+      colorStart: 'rgb(280, 42, 120)',
+      colorStop: '#ffffff',
+      blur: 2,
+
+      heartFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`
+
+    });
+
+
+
+
+
+
+
+
+
+    // appends an "active" class to .popup-overlay and .popup-content when the "START GAME" button is clicked
+    $(".openning").on("click", function () {
+      $(".popup-overlay, .popup-content").addClass("active");
+    });
+
+
+    //removes the "active" class to .popup and .popup-content when the "Close" button is clicked 
+    $(".close, .popup-overlay").on("click", function () {
+      $(".popup-overlay, .popup-content").removeClass("active");
+    });
+
+
+
+    // removes the "active" class from .popup-overlay and .popup-content when the "Yes, I am over 18 years old" button or the overlay is clicked
+
+
+    $(window).on('load', function () {
+      //テキストごとにspanタグを生成する
+      var element = $(".typing");
+      var thisChild = ""
+      element.each(function () {
+        var text = $(this).html();
+        var textbox = "";
+        text.split('').forEach(function (target) {
+          if (target !== " ") {
+            textbox += '<span>' + target + '</span>';
+          } else {
+            textbox += target;
+          }
+        });
+        $(this).html(textbox);
+      });
+
+      // タイピングアニメーション
+      $(element).each(function () {
+        thisChild = $(this).children(); //生成したspanタグを取得
+        thisChild.each(function (i) {
+          var time = 100;
+          $(this).delay(time * i).fadeIn(time);
+        });
+      });
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
+
+
+
+
+
+
+
+  <script>
+    $(document).ready(function () {
+      $(".twitter-share-button").click(function () {
+        let text = "ツイートするテキスト"; // ツイートするテキスト
+        let url = "https://example.com/"; // ツイートに含める URL を指定
+        let tweetUrl = "https://twitter.com/intent/tweet?url=" + encodeURIComponent(url) + "&text=" + encodeURIComponent(text); // Twitter の投稿ページの URL を生成
+
+        window.open(tweetUrl, "_blank"); // 新しいウィンドウで Twitter の投稿ページを開く
+      });
+    });
+  </script>
+
+
+
+</body>
+
+
+
+
+</html>
